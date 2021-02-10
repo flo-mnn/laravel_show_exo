@@ -9,7 +9,7 @@ class IngredientController extends Controller
 {
     public function index(){
         $ingredients = Ingredient::all();
-        return view('welcome');
+        return view('welcome',compact('ingredients'));
     }
 
     public function create(){
@@ -31,6 +31,20 @@ class IngredientController extends Controller
         $destroy->delete();
 
         return redirect('/');
+    }
+
+    public function edit($id){
+        return view('pages.edit',['ingredient'=> Ingredient::find($id)]);
+    }
+
+    public function update(Request $request, $id){
+        $update = Ingredient::find($id);
+        $update->name = $request->name; 
+        $update->quantity = $request->quantity; 
+        $update->measure = $request->measure; 
+        $update->img = $request->img; 
+        $update->save();
+        return redirect('/ingredient-show/'.$update->id);
     }
 
     public function show($id){
